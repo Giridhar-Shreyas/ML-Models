@@ -32,8 +32,8 @@ These models are designed for tasks such as fluid dynamics, turbulence modeling,
 
 | Model | File |
 |-------|------|
-| **AFNO-3D** | `AFNO/afno.py` |
-| **FNO-3D** | `FNO/fno.py` |
+| **AFNO** | `AFNO/afno.py` |
+| **FNO** | `FNO/fno.py` |
 | **ResNet18_3D** | `ResNet3D/resnet3d.py` |
 
 ---
