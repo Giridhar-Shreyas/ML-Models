@@ -28,6 +28,79 @@ These models are designed for tasks such as fluid dynamics, turbulence modeling,
 
 ---
 
+## Data Loading
+
+### `load_sclice_local(filename, domain_size)`
+Loads and reshapes CSV data into 3D NumPy arrays of size `domain_size × domain_size × domain_size` for velocity (`UUX`, `UUY`, `UUZ`) and Reynolds stress tensor (`TAU_xx`, `TAU_yy`, etc.) components.
+
+**Parameters:**  
+- `filename` *(str)* — Path to the input CSV file containing the simulation data.  
+- `domain_size` *(int)* — Size of each spatial dimension of the cubic domain.
+
+**Returns:**  
+- `true_taus` — Ground truth stress tensor components.  
+- `pred_taus` — Model-inferred stress tensor components.  
+- `uumeans` — Mean velocity components (`UUMEAN_x`, `UUMEAN_y`, `UUMEAN_z`).  
+- `uus` — Instantaneous velocity components (`UUX`, `UUY`, `UUZ`).  
+
+---
+
+## Visualization
+
+### `plot_uumean_vs_uu()`
+Compares mean and instantaneous velocity fields.
+
+**Parameters:**  
+- `uumeans` *(np.ndarray)* — Mean velocity field components.  
+- `uus` *(np.ndarray)* — Instantaneous velocity field components.  
+- `save` *(bool)* — Whether to save the plot as an image.  
+- `domain_size` *(int)* — Size of the domain in each spatial dimension.  
+- `i`, `j`, `k` *(int, optional)* — Slice indices along the x, y, z dimensions.  
+- `filename` *(str, optional)* — Output filename if `save=True`.  
+
+---
+
+### `plot_tau_vs_inferre_tau()`
+Plots true vs. inferred stress tensor components.
+
+### `plot_tau_vs_inferre_tau_l2()`
+Adds L2 difference visualization between true and predicted tensors.
+
+### `plot_tau_vs_inferre_tau_full()`
+Extended comparison including MSE, SSIM, PSNR, and fractional differences.
+
+**Parameters (for all three):**  
+- `true_taus` *(np.ndarray)* — True stress tensor components.  
+- `pred_taus` *(np.ndarray)* — Predicted stress tensor components.  
+- `save` *(bool)* — Whether to save the plot as an image.  
+- `domain_size` *(int)* — Size of the domain in each spatial dimension.  
+- `title_name` *(str)* — Title for the plot.  
+- `i`, `j`, `k` *(int, optional)* — Slice indices along the x, y, z dimensions.  
+- `filename` *(str, optional)* — Output filename if `save=True`.  
+
+---
+
+## Example Usage
+
+```python
+from utils import *
+
+# Load simulation data
+true_taus, pred_taus, uumeans, uus = load_sclice_local("data.csv", domain_size=38)
+
+# Plot predicted vs true stress tensors
+plot_tau_vs_inferre_tau(
+    true_taus=true_taus,
+    pred_taus=pred_taus,
+    save=False,
+    domain_size=38,
+    title_name='Stress Tensor Comparison',
+    k=19,
+    filename='comparison.png'
+)
+```
+---
+
 ## File Structure
 
 | Model | File |
@@ -35,6 +108,7 @@ These models are designed for tasks such as fluid dynamics, turbulence modeling,
 | **AFNO** | `AFNO/afno.py` |
 | **FNO** | `FNO/fno.py` |
 | **ResNet18_3D** | `ResNet3D/resnet3d.py` |
+| **utiols** | `utils.py`|
 
 ---
 
